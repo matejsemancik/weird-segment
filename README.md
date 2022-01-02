@@ -8,6 +8,8 @@ The display had no part number printed on it.
 The driver IC PCB had the part number removed.
 No documentation found on internets, apart from something [similar](http://www.ledlight-components.com//photo/ledlight-components/document/13097/DL3-2532RB-6.pdf).
 
+### Installation
+Clone the repo and copy over the `lib/WeirdSegment` folder with the actual library.
 ### Usage
 ``` cpp
 
@@ -99,4 +101,4 @@ F 3 -> 5
 G 3 -> 6
 ```
 
-This was a fun weekend project and also an excercise on how to write an Arduino library.
+This was a fun weekend project and also an excercise on how to write an Arduino library (not actually published).
