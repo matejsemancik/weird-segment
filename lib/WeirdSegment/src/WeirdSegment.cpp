@@ -38,9 +38,7 @@ Segment WeirdSegment::getSegment(uint8_t digit, uint8_t segment) {
   return all_segments[index_offset + segment];
 }
 
-Segment WeirdSegment::getDecimalPointSegment() {
-    return all_segments[16];
-}
+Segment WeirdSegment::getDecimalPointSegment() { return all_segments[16]; }
 
 void WeirdSegment::activateSegment(Segment segment) {
   clear();
@@ -52,6 +50,14 @@ void WeirdSegment::activateSegment(Segment segment) {
   pinMode(cathode_arduino_pin, OUTPUT);
   digitalWrite(anode_arduino_pin, HIGH);
   digitalWrite(cathode_arduino_pin, LOW);
+}
+
+void WeirdSegment::displayNumber(uint16_t number) {
+  clear();
+  if (number > 1999) {
+      activateSegment(getSegment(3, 6));
+      return;
+  }
 }
 
 void WeirdSegment::clear() {

@@ -15,6 +15,9 @@ void setup() {
 
   pinMode(BTN1, INPUT_PULLUP);
   pinMode(BTN2, INPUT_PULLUP);
+
+  display.displayNumber(2000);
+  delay(2000);
 }
 
 void loop() {

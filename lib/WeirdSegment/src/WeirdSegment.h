@@ -74,6 +74,13 @@ public:
   void activateSegment(Segment segment);
 
   /**
+   * @brief Displays the number on display.
+   *
+   * @param number Number in range 0..1999 (the displayable range).
+   */
+  void displayNumber(uint16_t number);
+
+  /**
    * @brief Clears the display.
    */
   void clear();
