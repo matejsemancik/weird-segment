@@ -5,6 +5,8 @@
 #define BTN2 D4
 
 WeirdSegment display;
+uint8_t number = 0;
+unsigned long timestamp = 1000;
 
 void setup() {
   Serial.begin(115200);
@@ -16,19 +18,19 @@ void setup() {
   pinMode(BTN1, INPUT_PULLUP);
   pinMode(BTN2, INPUT_PULLUP);
 
-  display.displayNumber(2000);
-  delay(2000);
+  display.writeSegment(2, 6);
+  display.writeDecimalPoint();
+  display.writeNumber(9);
 }
 
 void loop() {
-  display.activateSegment(display.getSegment(1, 0));
-  delay(100);
-  display.activateSegment(display.getSegment(2, 0));
-  delay(100);
-  display.activateSegment(display.getSegment(3, 0));
-  delay(100);
-  display.activateSegment(display.getSegment(2, 0));
-  delay(100);
-  display.activateSegment(display.getDecimalPointSegment());
-  delay(100);
+  if (millis() > timestamp) {
+    timestamp += 70;
+    number++;
+    display.clear();
+    display.writeNumber(number);
+    display.writeDecimalPoint();
+  }
+
+  display.update();
 }

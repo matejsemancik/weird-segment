@@ -13,10 +13,16 @@ No documentation found on internets, apart from something [similar](http://www.l
 
 WeirdSegment display;
 
+// Writes the "-.9" on display.
 void setup() {
     display.begin(PIN1, PIN2, PIN3, PIN4, PIN5, PIN6);
-    Segment segment = display.getSegment(3, 0); // Get the A segment of last digit.
-    display.activateSegment(segment);
+    display.writeSegment(2, 6); // Activates the G segment of the 3rd digit.
+    display.writeDecimalPoint(); // Activates decimal point
+    display.writeNumber(9); // Writes number 9
+}
+
+void loop() {
+    display.update();
 }
 ```
 

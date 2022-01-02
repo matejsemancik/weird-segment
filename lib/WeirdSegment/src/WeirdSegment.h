@@ -38,6 +38,17 @@ public:
   WeirdSegment();
 
   /**
+   * @brief Anode to cathode mappings for each display segment.
+   */
+  Segment all_segments[DISPLAY_SEGMENT_COUNT] = {
+      {4, 3}, {5, 3},                                         // Digit 1
+      {2, 1}, {3, 1}, {4, 1}, {5, 1}, {6, 1}, {3, 2}, {4, 2}, // Digit 2
+      {1, 2}, {1, 3}, {1, 4}, {1, 5}, {1, 6}, {5, 2}, {6, 2}, // Digit 3
+      {6, 3},                                                 // Dp
+      {2, 3}, {2, 4}, {2, 5}, {2, 6}, {3, 4}, {3, 5}, {3, 6}  // Digit 4
+  };
+
+  /**
    * @brief Configures the display pin mappings.
    *
    * @param pin1 Display pin 1.
@@ -51,34 +62,32 @@ public:
              uint8_t pin5, uint8_t pin6);
 
   /**
-   * @brief Get a single display segment.
-   *
+   * @brief Activates decimal point segment on display.
+   */
+  void writeDecimalPoint();
+
+  /**
+   * @brief Activates a single LED segment on display addressed by display digit
+   * and it's segment index.
    * @param digit 0-based index of display digit, between 0-3.
-   * @param segment 0-based index of index for selected digit.
-   * @see all_segments for mapping.
    *
-   * @return Segment
    */
-  Segment getSegment(uint8_t digit, uint8_t segment);
-
-  /**
-   * @brief Get the Decimal Point segment
-   * @return Decimal point Segment.
-   */
-  Segment getDecimalPointSegment();
-
-  /**
-   * @brief Activates a single LED segment on display.
-   * @param segment Segment to be activated.
-   */
-  void activateSegment(Segment segment);
+  void writeSegment(uint8_t digit, uint8_t segment);
 
   /**
    * @brief Displays the number on display.
    *
    * @param number Number in range 0..1999 (the displayable range).
    */
-  void displayNumber(uint16_t number);
+  void writeNumber(uint16_t number);
+
+  /**
+   * @brief Refreshes the display.
+   * This needs to be ran as frequently as possible.
+   * The driver turns on active display segments one by one (due to the display
+   * wiring).
+   */
+  void update();
 
   /**
    * @brief Clears the display.
@@ -86,17 +95,6 @@ public:
   void clear();
 
 private:
-  /**
-   * @brief Anode to cathode mappings for each display segment.
-   */
-  Segment all_segments[DISPLAY_SEGMENT_COUNT] = {
-      {4, 3}, {5, 3},                                         // Digit 1
-      {2, 1}, {3, 1}, {4, 1}, {5, 1}, {6, 1}, {3, 2}, {4, 2}, // Digit 2
-      {1, 2}, {1, 3}, {1, 4}, {1, 5}, {1, 6}, {5, 2}, {6, 2}, // Digit 3
-      {6, 3},                                                 // Dp
-      {2, 3}, {2, 4}, {2, 5}, {2, 6}, {3, 4}, {3, 5}, {3, 6}  // Digit 4
-  };
-
   /**
    * @brief Display character set.
    */
@@ -118,6 +116,13 @@ private:
    * method.
    */
   uint8_t pin_mapping[DISPLAY_PIN_COUNT];
+
+  /**
+   * @brief Boolean map of currently active display segments.
+   * Segments marked as active are being currently displayed by the update
+   * method.
+   */
+  boolean segment_buffer[DISPLAY_SEGMENT_COUNT];
 
   /**
    * @brief Get the Anode Pin of provided Segment

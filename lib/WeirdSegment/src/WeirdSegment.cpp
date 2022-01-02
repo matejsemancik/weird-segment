@@ -15,7 +15,9 @@ void WeirdSegment::begin(uint8_t pin1, uint8_t pin2, uint8_t pin3, uint8_t pin4,
   clear();
 }
 
-Segment WeirdSegment::getSegment(uint8_t digit, uint8_t segment) {
+void WeirdSegment::writeDecimalPoint() { segment_buffer[16] = true; }
+
+void WeirdSegment::writeSegment(uint8_t digit, uint8_t segment) {
   uint8_t index_offset;
   switch (digit) {
   case 0:
@@ -35,36 +37,48 @@ Segment WeirdSegment::getSegment(uint8_t digit, uint8_t segment) {
     break;
   }
 
-  return all_segments[index_offset + segment];
+  segment_buffer[index_offset + segment] = true;
 }
 
-Segment WeirdSegment::getDecimalPointSegment() { return all_segments[16]; }
-
-void WeirdSegment::activateSegment(Segment segment) {
-  clear();
-
-  uint8_t anode_arduino_pin = getAnodePin(segment);
-  uint8_t cathode_arduino_pin = getCathodePin(segment);
-
-  pinMode(anode_arduino_pin, OUTPUT);
-  pinMode(cathode_arduino_pin, OUTPUT);
-  digitalWrite(anode_arduino_pin, HIGH);
-  digitalWrite(cathode_arduino_pin, LOW);
-}
-
-void WeirdSegment::displayNumber(uint16_t number) {
-  clear();
+void WeirdSegment::writeNumber(uint16_t number) {
   if (number > 1999) {
-      activateSegment(getSegment(3, 6));
-      return;
+    writeSegment(3, 6);
+    return;
+  }
+
+  uint8_t lastNumber = number % 10;
+  for (uint8_t i = 0; i < all_digits[lastNumber].segment_count; i++) {
+    uint8_t seg_index = all_digits[lastNumber].segment_indices[i];
+    segment_buffer[seg_index + 17] = true;
+  }
+}
+
+void WeirdSegment::update() {
+  for (uint8_t i = 0; i < DISPLAY_SEGMENT_COUNT; i++) {
+    Segment segment = all_segments[i];
+    uint8_t anode_arduino_pin = getAnodePin(segment);
+    uint8_t cathode_arduino_pin = getCathodePin(segment);
+
+    for (uint8_t n = 0; n < DISPLAY_PIN_COUNT; n++) {
+      pinMode(pin_mapping[n], INPUT);
+      digitalWrite(pin_mapping[n], LOW);
+    }
+
+    if (segment_buffer[i] == true) {
+      pinMode(anode_arduino_pin, OUTPUT);
+      pinMode(cathode_arduino_pin, OUTPUT);
+      digitalWrite(anode_arduino_pin, HIGH);
+      digitalWrite(cathode_arduino_pin, LOW);
+    }
   }
 }
 
 void WeirdSegment::clear() {
-  for (uint8_t i = 0; i < DISPLAY_PIN_COUNT; i++) {
-    digitalWrite(pin_mapping[i], LOW);
-    pinMode(pin_mapping[i], INPUT);
+  for (uint8_t i = 0; i < DISPLAY_SEGMENT_COUNT; i++) {
+    segment_buffer[i] = false;
   }
+
+  update();
 }
 
 uint8_t WeirdSegment::getAnodePin(Segment segment) {
