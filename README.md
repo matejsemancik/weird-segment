@@ -1,7 +1,7 @@
 ## weird-segment
 
 An Arduino driver for the the unknown 7segment display with 188.8 format,
-that I salvaged from [this](https://mk-eshop.cz/fm-transmittery/mkf-bt36charge.html) broken BT-FM transmitter I used in car.
+which I salvaged from [this](https://mk-eshop.cz/fm-transmittery/mkf-bt36charge.html) broken BT-FM transmitter I used in car.
 
 The display has only 6 pins and it was connected to some sort of driver IC.
 The display had no part number printed on it.
@@ -99,4 +99,4 @@ F 3 -> 5
 G 3 -> 6
 ```
 
-This was a fun weekend project.
+This was a fun weekend project and also an excercise on how to write an Arduino library.
