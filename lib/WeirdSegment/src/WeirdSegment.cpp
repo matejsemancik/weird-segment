@@ -42,14 +42,41 @@ void WeirdSegment::writeSegment(uint8_t digit, uint8_t segment) {
 
 void WeirdSegment::writeNumber(uint16_t number) {
   if (number > 1999) {
+    clear();
+    writeSegment(1, 6);
+    writeSegment(2, 6);
     writeSegment(3, 6);
+    update();
     return;
   }
 
-  uint8_t lastNumber = number % 10;
-  for (uint8_t i = 0; i < all_digits[lastNumber].segment_count; i++) {
-    uint8_t seg_index = all_digits[lastNumber].segment_indices[i];
+  unsigned int number0 = number % 10;
+  unsigned int number1 = number / 10 % 10;
+  unsigned int number2 = number / 100 % 10;
+  unsigned int number3 = number / 1000 % 10;
+
+  for (unsigned int i = 0; i < all_digits[number0].segment_count; i++) {
+    uint8_t seg_index = all_digits[number0].segment_indices[i];
     segment_buffer[seg_index + 17] = true;
+  }
+
+  if (number >= 10) {
+    for (unsigned int i = 0; i < all_digits[number1].segment_count; i++) {
+      uint8_t seg_index = all_digits[number1].segment_indices[i];
+      segment_buffer[seg_index + 9] = true;
+    }
+  }
+
+  if (number >= 100) {
+    for (unsigned int i = 0; i < all_digits[number2].segment_count; i++) {
+      uint8_t seg_index = all_digits[number2].segment_indices[i];
+      segment_buffer[seg_index + 2] = true;
+    }
+  }
+
+  if (number3 == 1) {
+    segment_buffer[0] = true;
+    segment_buffer[1] = true;
   }
 }
 

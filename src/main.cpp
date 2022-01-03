@@ -5,7 +5,7 @@
 #define BTN2 D4
 
 WeirdSegment display;
-uint8_t number = 0;
+uint16_t number = 0;
 unsigned long timestamp = 1000;
 
 void setup() {
@@ -17,15 +17,11 @@ void setup() {
 
   pinMode(BTN1, INPUT_PULLUP);
   pinMode(BTN2, INPUT_PULLUP);
-
-  display.writeSegment(2, 6);
-  display.writeDecimalPoint();
-  display.writeNumber(9);
 }
 
 void loop() {
   if (millis() > timestamp) {
-    timestamp += 70;
+    timestamp += 50;
     number++;
     display.clear();
     display.writeNumber(number);
