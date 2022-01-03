@@ -82,6 +82,19 @@ public:
   void writeNumber(uint16_t number);
 
   /**
+   * @brief Enables/disables display output.
+   */
+  void setOutputEnabled(bool outputEnabled);
+
+  /**
+   * @brief Returns if display output is enabled.
+   * 
+   * @return true If display output is enabled.
+   * @return false If display output is disabled.
+   */
+  bool isOutputEnabled();
+
+  /**
    * @brief Refreshes the display.
    * This needs to be ran as frequently as possible.
    * The driver turns on active display segments one by one (due to the display
@@ -123,6 +136,11 @@ private:
    * method.
    */
   bool segment_buffer[DISPLAY_SEGMENT_COUNT];
+
+  /**
+   * @brief Whether display output is enabled.
+   */
+  bool is_enabled;
 
   /**
    * @brief Get the Anode Pin of provided Segment

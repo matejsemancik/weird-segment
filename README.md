@@ -10,7 +10,12 @@ No documentation found on internets, apart from something [similar](http://www.l
 
 ### Installation
 Clone the repo and copy over the `lib/WeirdSegment` folder with the actual library.
+
 ### Usage
+First, write the display buffer using the `write*` functions.
+After that, the display must be continuously updated using the `update` function, which outputs
+the display buffer into the physical LED segments.
+
 ``` cpp
 
 WeirdSegment display;
@@ -28,6 +33,51 @@ void loop() {
 }
 ```
 
+The display buffer should be cleared using the `clear` function before each buffer change.
+
+``` cpp
+...
+
+// Displays number of seconds since the start of the program
+void loop() {
+    display.clear();
+    display.writeNumber(millis() / 1000);
+    display.update();
+}
+```
+
+### Features
+#### Single segment addressing
+The display segments are addressed sequentially from the first segment of the first digit (D1/B),
+until the last segment of the last digit (D4/G). 
+Decimal point is addressed via separate function.
+``` cpp
+display.writeSegment(0, 0); // Lights up the first segment of first digit (D1/B)
+display.writeSegment(1, 0); // Lights up the first segment of second digit (D2/A)
+display.writeSegment(3, 3); // Lights up the bottom segment of last digit (D4/D)
+display.writeDecimalPoint(); // Lights up the decimal point
+```
+
+#### Displaying numbers
+Display is, by design, able to show any number in range 0..1999.
+``` cpp
+display.writeNumber(256);
+```
+
+Combined with decimal point, the floating point number can be shown.
+The following code displays the "42.0": 
+``` cpp
+display.writeNumber(420);
+display.writeDecimalPoint();
+```
+
+#### Output control
+Display output can be enabled and disabled using the following function
+``` cpp
+// Useful for "flashing" function
+bool isOutputEnabled = display.isOutputEnabled();
+display.setOutputEnabled(!isOutputEnabled);
+```
 ### The display
 
 The LED segments are 3.3V tolerant. The current-limiting resistor should be placed before each pin.

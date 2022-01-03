@@ -1,7 +1,9 @@
 #include "WeirdSegment.h"
 #include <Arduino.h>
 
-WeirdSegment::WeirdSegment() {}
+WeirdSegment::WeirdSegment() {
+  is_enabled = true;
+}
 
 void WeirdSegment::begin(uint8_t pin1, uint8_t pin2, uint8_t pin3, uint8_t pin4,
                          uint8_t pin5, uint8_t pin6) {
@@ -81,6 +83,15 @@ void WeirdSegment::writeNumber(uint16_t number) {
   }
 }
 
+void WeirdSegment::setOutputEnabled(bool enabled) {
+  is_enabled = enabled;
+  if (!enabled) {
+    clear();
+  }
+}
+
+bool WeirdSegment::isOutputEnabled() { return is_enabled; }
+
 void WeirdSegment::update() {
   for (uint8_t i = 0; i < DISPLAY_SEGMENT_COUNT; i++) {
     Segment segment = all_segments[i];
@@ -92,7 +103,7 @@ void WeirdSegment::update() {
       digitalWrite(pin_mapping[n], LOW);
     }
 
-    if (segment_buffer[i] == true) {
+    if (segment_buffer[i] == true && is_enabled) {
       pinMode(anode_arduino_pin, OUTPUT);
       pinMode(cathode_arduino_pin, OUTPUT);
       digitalWrite(anode_arduino_pin, HIGH);
