@@ -3,6 +3,8 @@
 An Arduino driver for the the unknown 7segment display with 188.8 format,
 which I salvaged from [this](https://mk-eshop.cz/fm-transmittery/mkf-bt36charge.html) broken BT-FM transmitter I used in car.
 
+![](docs/display.jpg)
+
 The display has only 6 pins and it was connected to some sort of driver IC.
 The display had no part number printed on it.
 The driver IC PCB had the part number removed.
@@ -80,8 +82,8 @@ display.setOutputEnabled(!isOutputEnabled);
 ```
 ### The display
 
-The LED segments are 3.3V tolerant. The current-limiting resistor should be placed before each pin.
-(Values tried: 22ohm = super bright. I settled on 100ohm).
+The LED segments are 3.3V tolerant.
+The current-limiting resistor should be placed before each pin (anything above 22ohm).
 
 I probed the display to find the anode and cathode for each LED segment:
 
