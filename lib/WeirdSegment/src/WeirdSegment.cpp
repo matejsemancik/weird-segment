@@ -1,4 +1,5 @@
 #include "WeirdSegment.h"
+#include <Arduino.h>
 
 WeirdSegment::WeirdSegment() {}
 

@@ -1,7 +1,7 @@
 #ifndef MATSEM_WEIRD_SEGMENT_H
 #define MATSEM_WEIRD_SEGMENT
 
-#include <Arduino.h>
+#include <stdlib.h>
 
 #define DISPLAY_SEGMENT_COUNT 24
 #define DISPLAY_PIN_COUNT 6
@@ -122,7 +122,7 @@ private:
    * Segments marked as active are being currently displayed by the update
    * method.
    */
-  boolean segment_buffer[DISPLAY_SEGMENT_COUNT];
+  bool segment_buffer[DISPLAY_SEGMENT_COUNT];
 
   /**
    * @brief Get the Anode Pin of provided Segment
