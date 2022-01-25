@@ -7,7 +7,7 @@ which I salvaged from [this](https://mk-eshop.cz/fm-transmittery/mkf-bt36charge.
 
 The display has only 6 pins and it was connected to some sort of driver IC.
 The display had no part number printed on it.
-The driver IC PCB had the part number removed.
+The driver IC had the part number removed.
 No documentation found on internets, apart from something [similar](http://www.ledlight-components.com//photo/ledlight-components/document/13097/DL3-2532RB-6.pdf).
 
 ### Installation
